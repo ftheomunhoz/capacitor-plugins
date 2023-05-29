@@ -244,7 +244,7 @@ public class PushNotificationsPlugin extends Plugin {
                     intent.putExtras(remoteMessage.toIntent().getExtras());
                     PendingIntent pendingIntent = PendingIntent.getActivity(
                         getContext(),
-                        0,
+                        generateUniqueId(),
                         intent,
                         PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
                     );
@@ -258,7 +258,7 @@ public class PushNotificationsPlugin extends Plugin {
                         .setContentIntent(pendingIntent)
                         .setContentText(body)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                    notificationManager.notify(0, builder.build());
+                    notificationManager.notify(generateUniqueId(), builder.build());
                 }
             }
             remoteMessageData.put("title", title);
@@ -296,5 +296,9 @@ public class PushNotificationsPlugin extends Plugin {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private int generateUniqueId() {
+        return (int) (System.currentTimeMillis() % (long) 1e9);
     }
 }
